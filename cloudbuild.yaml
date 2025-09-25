@@ -23,4 +23,4 @@ steps:
     
 substitutions:
   # The repository name can be passed as a substitution
-  _REPO_NAME: "my-app"
+  _REPO_NAME: '${REPO_NAME}'
