@@ -1,28 +1,18 @@
-# Use an official Node.js runtime as a parent image
+# Use a lightweight Node.js image with all the tools
 FROM node:18-alpine
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json (or yarn.lock)
-COPY package.json ./
-COPY package-lock.json ./
-# If you are using yarn, use this instead:
-# COPY yarn.lock ./
+# Copy package.json and package-lock.json to cache dependencies
+COPY package.json package-lock.json ./
 
-# Install project dependencies
+# Install dependencies
 RUN npm install
-# If using yarn:
-# RUN yarn install --frozen-lockfile
 
-# Copy the rest of your application's code into the container
-COPY . .
-
-# Make port 3000 available to the world outside this container
+# Expose port 3000 where Next.js dev server runs
 EXPOSE 3000
 
-# The command to run when the container starts.
-# This starts the Next.js development server.
-CMD ["npm", "run", "dev"]
-# If using yarn:
-# CMD ["yarn", "dev"]
+# The critical part: this command starts the live dev server with hot-reloading
+# Next.js will watch for file changes in the /app directory
+CMD ["npm", "run", "dev", "--port", "3000"]
